@@ -7,7 +7,7 @@ export default function ProductDetailsView({ product, relatedProducts }) {
             <div className="grid md:grid-cols-2 gap-8">
                 {/* Image */}
                 <img
-                    src={product.image}
+                    src={product.imageUrl}
                     alt={product.name}
                     className="w-full rounded-lg shadow-lg"
                 />
@@ -24,8 +24,7 @@ export default function ProductDetailsView({ product, relatedProducts }) {
                         <span className="text-base font-normal">& Free Shipping</span>
                     </p>
 
-                    <p className="mt-4 text-gray-700">{product.description1}</p>
-                    <p className="mt-4 text-gray-700">{product.description2}</p>
+                    <p className="mt-4 text-gray-700">{product.description}</p>
 
                     {/* Quantity + Add to Cart */}
                     <div className="flex items-center mt-6 gap-3">
@@ -39,7 +38,10 @@ export default function ProductDetailsView({ product, relatedProducts }) {
                             min={1}
                             className="w-16 border rounded px-2 py-1"
                         />
-                        <button className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                        <button
+                            className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled
+                        >
                             Add to cart
                         </button>
                     </div>
@@ -55,11 +57,8 @@ export default function ProductDetailsView({ product, relatedProducts }) {
                             <img
                                 src="https://www.discoversignage.com/uploads/25-05-23_10:43_4-Logo_US_Amex(3)1.png"
                                 alt="cards"
-                                className="h-25"
+                                className="h-10"
                             />
-
-
-
                         </div>
                     </div>
                 </div>
@@ -74,35 +73,36 @@ export default function ProductDetailsView({ product, relatedProducts }) {
                     <button className="text-gray-500 hover:text-black">Reviews (0)</button>
                 </div>
                 <div className="py-4">
-                    <p className="text-gray-700">{product.description1}</p>
-                    <p className="mt-4 text-gray-700">{product.description2}</p>
+                    <p className="text-gray-700">{product.description}</p>
                 </div>
             </div>
 
             {/* Related Products */}
-            <div className="mt-12">
-                <h3 className="text-xl font-semibold mb-4">Related Products</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    {relatedProducts.map((p) => (
-                        <Link
-                            key={p.id}
-                            to={`/product/${p.id}`}
-                            className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition block"
-                        >
-                            <img
-                                src={p.image}
-                                alt={p.name}
-                                className="w-full h-56 object-cover"
-                            />
-                            <div className="p-4">
-                                <h4 className="font-medium">{p.name}</h4>
-                                <p className="text-gray-500">{p.category}</p>
-                                <p className="font-semibold mt-1">${p.price.toFixed(2)}</p>
-                            </div>
-                        </Link>
-                    ))}
+            {relatedProducts.length > 0 && (
+                <div className="mt-12">
+                    <h3 className="text-xl font-semibold mb-4">Related Products</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                        {relatedProducts.map((p) => (
+                            <Link
+                                key={p.id}
+                                to={`/product/${p.id}`}
+                                className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition block"
+                            >
+                                <img
+                                    src={p.imageUrl}
+                                    alt={p.name}
+                                    className="w-full h-56 object-cover"
+                                />
+                                <div className="p-4">
+                                    <h4 className="font-medium">{p.name}</h4>
+                                    <p className="text-gray-500">{p.category}</p>
+                                    <p className="font-semibold mt-1">${p.price.toFixed(2)}</p>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 }

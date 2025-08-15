@@ -1,43 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axiosInstance from "../axiosConfig";
+import { useAuth } from "../context/AuthContext";
 import ProductForm from "../components/ProductForm";
 import ProductList from "../components/ProductList";
 
 export default function Products() {
+  const { user } = useAuth();
   const [editingProduct, setEditingProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [products, setProducts] = useState([
-    {
-      _id: "1",
-      name: "Aloe Vera",
-      category: "Succulent",
-      price: 12.99,
-      stock: 15,
-      description: "A hardy plant that requires little water.",
-      careTips: "Water once a week, indirect sunlight.",
-      imageUrl: "https://via.placeholder.com/300x200?text=Aloe+Vera",
-    },
-    {
-      _id: "2",
-      name: "Peace Lily",
-      category: "Flowering Plant",
-      price: 18.5,
-      stock: 8,
-      description: "Beautiful plant with white blooms.",
-      careTips: "Keep soil moist, low to medium light.",
-      imageUrl: "https://via.placeholder.com/300x200?text=Peace+Lily",
-    },
-    {
-      _id: "3",
-      name: "Snake Plant",
-      category: "Succulent",
-      price: 14.0,
-      stock: 20,
-      description: "Low-maintenance plant with tall leaves.",
-      careTips: "Water sparingly, tolerates low light.",
-      imageUrl: "https://via.placeholder.com/300x200?text=Snake+Plant",
-    },
-  ]);
+  const [products, setProducts] = useState([]);
+
+  // Fetch products from API on component mount
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axiosInstance.get("/api/product", {
+          headers: { Authorization: `Bearer ${user.token}` },
+        });
+        setProducts(response.data);
+      } catch (error) {
+        console.error(error);
+        alert(error.response?.data?.message || "Failed to fetch products.");
+      }
+    };
+
+    fetchProducts();
+  }, [user.token]);
 
   const handleAddProduct = () => {
     setEditingProduct(null);

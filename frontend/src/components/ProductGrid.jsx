@@ -16,10 +16,10 @@ export default function ProductGrid({ products }) {
       {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {products.map((product) => (
-          <Link to={`/product/${product.id}`} key={product.id} className="group">
+          <Link  to={`/product/${product._id}`} key={product._id} className="group">
             <div className="overflow-hidden rounded-lg shadow-md">
               <img
-                src={product.image}
+                src={product.imageUrl}
                 alt={product.name}
                 className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300"
               />

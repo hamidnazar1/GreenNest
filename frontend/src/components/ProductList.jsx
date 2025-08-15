@@ -1,10 +1,14 @@
 import axiosInstance from "../axiosConfig";
+import { useAuth } from '../context/AuthContext';
 
 export default function ProductList({ products, setProducts, setEditingProduct }) {
+  const { user } = useAuth();
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
     try {
-      await axiosInstance.delete(`/api/products/${id}`);
+      await axiosInstance.delete(`/api/product/${id}`, {
+        headers: { Authorization: `Bearer ${user.token}` }, // send token
+      });
       setProducts(products.filter((p) => p._id !== id));
     } catch {
       alert("Failed to delete product.");
