@@ -102,3 +102,4 @@ The application should now be running at `http://localhost:3000`.
 
 This project is licensed under the MIT License.
 
+JIRA URL: https://hamidnazarc.atlassian.net/jira/software/projects/GRN/boards/34/backlog
